@@ -1,16 +1,11 @@
-boot.img: boot.bin
-	dd if=/dev/zero of=zero_fill.dat bs=1 count=$(shell expr 510 - `ls -l $< | cut -d' ' -f5`)
-	./make_bsfooter.sh > bsfooter.dat
-	cat $< zero_fill.dat bsfooter.dat > $@
+boot.img: boot.o
+	ld -o $@ $< -T boot.ld
 
-boot.bin: boot.elf
-	objcopy -O binary $< $@
-
-boot.elf: boot.S
-	as -g -o $@ $<
+boot.o: boot.S
+	as -o $@ $<
 
 clean:
-	@rm -f boot.elf boot.bin zero_fill.dat bsfooter.dat boot.img *~
+	@rm -f *.o *.img *~
 
 run: boot.img
 	qemu -fda $<

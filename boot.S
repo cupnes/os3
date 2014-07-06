@@ -1,5 +1,6 @@
 BOOTSEG		= 0x07C0		/* original address of boot-sector */
 	.code16
+	.text
 	movw	$BOOTSEG, %ax
 	movw	%ax, %ds
 	movw	$welcome_msg, %si
@@ -16,6 +17,7 @@ msg_loop:
 bs_loop:
 	jmp		bs_loop
 
+	.data
 welcome_msg:
 	.ascii	"Welcome to OS3!"
 	.byte	0
