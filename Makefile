@@ -6,9 +6,6 @@ boot.img: boot.bin
 boot.bin: boot.elf
 	objcopy -O binary $< $@
 
-# boot.img: boot.elf
-# 	ld -o $@ $< -T boot.ld
-
 boot.elf: boot.S
 	as -g -o $@ $<
 
