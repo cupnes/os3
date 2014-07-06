@@ -12,5 +12,8 @@ boot.elf: boot.S
 clean:
 	@rm -f boot.elf boot.bin zero_fill.dat bsfooter.dat boot.img *~
 
-debug:
-	qemu -gdb tcp::10000 -S -fda boot.img &
+run: boot.img
+	qemu -fda $<
+
+debug: boot.img
+	qemu -gdb tcp::10000 -S -fda $< &
