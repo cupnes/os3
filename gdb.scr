@@ -1,0 +1,4 @@
+target remote localhost:10000
+source boot.S
+symbol-file boot.elf
+la src
