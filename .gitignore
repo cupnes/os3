@@ -3,6 +3,7 @@ GPATH
 GRTAGS
 GTAGS
 tmp/
+*.o
 *.bin
 *.img
 *.dat

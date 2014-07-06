@@ -1,7 +1,7 @@
 BOOTSEG		= 0x07C0		/* original address of boot-sector */
 	.code16
 	.text
-	movw	$BOOTSEG, %ax
+	movw	$0x0000, %ax
 	movw	%ax, %ds
 	movw	$welcome_msg, %si
 
@@ -15,6 +15,7 @@ msg_loop:
 	jmp		msg_loop
 
 bs_loop:
+	hlt
 	jmp		bs_loop
 
 	.data
