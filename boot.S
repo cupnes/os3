@@ -49,12 +49,21 @@ load_disk:
 	movb	$0x00, %dh	/* Head		0	*/
 	movb	$0x02, %cl	/* Sector	2	*/
 
+	movw	$0x0000, %si	/* Fault num counter	*/
+retry:
 	movb	$0x02, %ah	/* Read from disk	*/
 	movb	$0x01, %al	/* 1 sector			*/
 	movw	$0x0000, %bx
 	movb	$0x00, %dl	/* Drive A			*/
 	int		$0x13		/* Call disk BIOS	*/
-	jc		error
+	jnc		bs_loop
+	addw	$1, %si
+	cmpw	$5, %si
+	jae		error
+	movb	$0x00, %ah
+	movb	$0x00, %dl
+	int		$0x13
+	jmp		retry
 
 bs_loop:
 	hlt
