@@ -49,6 +49,7 @@ load_disk:
 	movb	$0x00, %dh	/* Head		0	*/
 	movb	$0x02, %cl	/* Sector	2	*/
 
+readloop:
 	movw	$0x0000, %si	/* Fault num counter	*/
 retry:
 	movb	$0x02, %ah	/* Read from disk	*/
@@ -56,7 +57,7 @@ retry:
 	movw	$0x0000, %bx
 	movb	$0x00, %dl	/* Drive A			*/
 	int		$0x13		/* Call disk BIOS	*/
-	jnc		bs_loop
+	jnc		next
 	addw	$1, %si
 	cmpw	$5, %si
 	jae		error
@@ -64,6 +65,13 @@ retry:
 	movb	$0x00, %dl
 	int		$0x13
 	jmp		retry
+next:
+	movw	%es, %ax
+	addw	$0x0020, %ax
+	movw	%ax, %es
+	addb	$1, %cl
+	cmpb	$18, %cl
+	jbe		readloop
 
 bs_loop:
 	hlt
