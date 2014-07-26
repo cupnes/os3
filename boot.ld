@@ -9,8 +9,4 @@ SECTIONS
 
 		. = IPLBASE + 510;
 		.sign	: {SHORT(0xaa55)}
-		.sign	: {LONG(0xbeefcafe)}
-
-		. = IPLBASE + 1024;
-		.sign	: {LONG(0x01234567)}
 }
