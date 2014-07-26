@@ -1,3 +1,4 @@
+	.equ	CYLS, 10
 	.code16
 	.text
 	jmp		entry
@@ -72,6 +73,14 @@ next:
 	addb	$1, %cl
 	cmpb	$18, %cl
 	jbe		readloop
+	movb	$1, %cl
+	addb	$1, %dh
+	cmpb	$2, %dh
+	jb		readloop
+	movb	$0, %dh
+	addb	$1, %ch
+	cmpb	$CYLS, %ch
+	jb		readloop
 
 bs_loop:
 	hlt
