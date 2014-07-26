@@ -82,9 +82,7 @@ next:
 	cmpb	$CYLS, %ch
 	jb		readloop
 
-bs_loop:
-	hlt
-	jmp		bs_loop
+	jmp		0xc200
 
 error:
 	hlt
