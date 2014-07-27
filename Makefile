@@ -5,17 +5,25 @@ os.img: boot.bin os.bin
 boot.bin: boot.o
 	ld -o $@ $< -T boot.ld
 
-os.bin: os.o
-	ld -o $@ $< -T os.ld
+os.bin: head.o bootpack.o
+	ld -o head.bin $< -T head.ld
+	ld -o bootpack.bin bootpack.o -T bootpack.ld
+	cat head.bin bootpack.bin > $@
 
 boot.o: boot.S
 	as -o $@ $<
 
-os.o: os.S
+head.o: head.S
 	as -o $@ $<
 
+bootpack.o: bootpack.S
+	as -o $@ $<
+
+bootpack.S: bootpack.c
+	gcc -S $< -nostdlib -Wl,--oformat=binary -o $@
+
 clean:
-	@rm -f *.o *.bin *.img *~
+	@rm -f *.o *.bin *.img *~ bootpack.S
 
 run: os.img
 	qemu -fda $<
