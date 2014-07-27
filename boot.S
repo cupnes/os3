@@ -82,6 +82,8 @@ next:
 	cmpb	$CYLS, %ch
 	jb		readloop
 
+	movb	$CYLS, (0x0ff0)
+
 	jmp		0xc200
 
 error:
